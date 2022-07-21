@@ -1,0 +1,109 @@
+<?php
+  include_once "conexao.php";
+
+  if(isset($_POST['logar'])){
+  
+    $email = mysqli_escape_string($link,$_POST['email']);
+    $senha = mysqli_escape_string($link,$_POST['senha']);
+    $bd_email = null;
+    $bd_senha = null;
+
+    if(empty($email) or empty($senha)){
+       echo "Insira todos os valores";
+       return;
+    } else{
+      $sql = "SELECT Email FROM usuario WHERE Email = '$email'";
+      
+      $res = mysqli_query($link, $sql);
+
+      if(mysqli_num_rows($res) > 0){
+        $sql = "SELECT * FROM usuario WHERE Email = '$email' AND Senha = '$senha'";
+
+        $res = mysqli_query($link, $sql);
+
+        while ($bd = mysqli_fetch_row($res)) {
+          $bd_email = $bd[4];
+          $bd_senha = $bd[5];
+        }
+    
+        if($bd_email == $email && $bd_senha == $senha){
+          header('Location: usuarios.php');
+        } else{ 
+          echo 'deu pau';
+        }
+      }
+
+    }
+
+   
+  }
+?>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.88.1">
+    <title>Login</title>
+
+    
+<!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+
+  <style>
+    .bd-placeholder-img {
+      font-size: 1.125rem;
+      text-anchor: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      user-select: none;
+    }
+
+    @media (min-width: 768px) {
+      .bd-placeholder-img-lg {
+        font-size: 3.5rem;
+      }
+    }
+
+    .container{
+      margin-top: 50px;
+      width: 30%;
+    }
+  </style>
+    
+    <!-- Custom styles for this template -->
+    <link href="signin.css" rel="stylesheet">
+  </head>
+  <body class="text-center">
+    
+<main class="container form-signin">
+  <form action="index.php" method="post">
+    
+    <h1 class="h3 mb-3 fw-normal">Faça seu login</h1>
+
+    <div class="form-floating mb-3">
+      <input name="email" type="email" class="form-control" id="floatingInput" placeholder="insira seu email..">
+      <label for="floatingInput">Email address</label>
+    </div>
+    <div class="form-floating mb-3">
+      <input name="senha" type="password" class="form-control" id="floatingPassword" placeholder="Passwoinsira sua senha">
+      <label for="floatingPassword">Password</label>
+    </div>
+
+
+    <div>
+      <button name="logar" class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+    </div>
+
+    <div>
+      <p><a href="Cadastro.php">Faça seu cadastro</a></p>
+    </div>
+  </form>
+</main>
+
+
+    
+  </body>
+</html>
